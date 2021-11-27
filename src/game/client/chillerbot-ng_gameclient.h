@@ -112,41 +112,41 @@ void CGameClient::PenetrateServer()
 		return;
 	m_PenDelay = 100 + rand() % 50;
 
-	// chat messages
-	if (rand() % 2) // parsed chat cmds
-	{
-		char aChatCmd[128];
-		char aArg[64];
-		static const char *pCharset = " abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!\"§$%&/()=?{[]}\\<>|-.,;:+#*'~'@_/";
-		str_copy(aArg, "", sizeof(aArg));
-		int len = rand() % 64;
-		for (int i = 0; i < len; i++)
-		{
-			char buf[2];
-			str_format(buf, sizeof(buf), "%c", pCharset[rand() % strlen(pCharset)]);
-			str_append(aArg, buf, sizeof(aArg));
-		}
-		str_format(aChatCmd, sizeof(aChatCmd), "/%s %s", GetRandomChatCommand(), aArg);
-		m_pChat->SayChat(aChatCmd);
-	}
-	else // file messages
-	{
-		const char *pMessage = GetPentestCommand(g_Config.m_ClPenTestFile);
-		if (pMessage)
-		{
-			m_pChat->SayChat(pMessage);
-		}
-		else
-		{
-			const int NUM_CMDS = 3;
-			char aaCmds[NUM_CMDS][512] = {
-				"/register xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx 12831237189237189231982371938712893798",
-				"todo: configure me ( pentest file not found)",
-				"/login bang baz baz"
-			};
-			m_pChat->SayChat(aaCmds[rand() % NUM_CMDS]);
-		}
-	}
+	// // chat messages
+	// if (rand() % 2) // parsed chat cmds
+	// {
+	// 	char aChatCmd[128];
+	// 	char aArg[64];
+	// 	static const char *pCharset = " abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!\"§$%&/()=?{[]}\\<>|-.,;:+#*'~'@_/";
+	// 	str_copy(aArg, "", sizeof(aArg));
+	// 	int len = rand() % 64;
+	// 	for (int i = 0; i < len; i++)
+	// 	{
+	// 		char buf[2];
+	// 		str_format(buf, sizeof(buf), "%c", pCharset[rand() % strlen(pCharset)]);
+	// 		str_append(aArg, buf, sizeof(aArg));
+	// 	}
+	// 	str_format(aChatCmd, sizeof(aChatCmd), "/%s %s", GetRandomChatCommand(), aArg);
+	// 	m_pChat->SayChat(aChatCmd);
+	// }
+	// else // file messages
+	// {
+	// 	const char *pMessage = GetPentestCommand(g_Config.m_ClPenTestFile);
+	// 	if (pMessage)
+	// 	{
+	// 		m_pChat->SayChat(pMessage);
+	// 	}
+	// 	else
+	// 	{
+	// 		const int NUM_CMDS = 3;
+	// 		char aaCmds[NUM_CMDS][512] = {
+	// 			"/register xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx 12831237189237189231982371938712893798",
+	// 			"todo: configure me ( pentest file not found)",
+	// 			"/login bang baz baz"
+	// 		};
+	// 		m_pChat->SayChat(aaCmds[rand() % NUM_CMDS]);
+	// 	}
+	// }
 
 	// kill and reconnect
 	int r = rand() % 50;
@@ -156,37 +156,37 @@ void CGameClient::PenetrateServer()
 		m_pClient->Connect(g_Config.m_DbgStressServer);
 }
 
-const char *CGameClient::GetRandomChatCommand()
-{
-	if (!m_vChatCmds.size())
-		return 0;
-	return m_vChatCmds[rand() % m_vChatCmds.size()];
-}
+// const char *CGameClient::GetRandomChatCommand()
+// {
+// 	if (!m_vChatCmds.size())
+// 		return 0;
+// 	return m_vChatCmds[rand() % m_vChatCmds.size()];
+// }
 
-const char *CGameClient::GetPentestCommand(char const *pFileName)
-{
-	IOHANDLE File = m_pStorage->OpenFile(pFileName, IOFLAG_READ, IStorage::TYPE_ALL);
-	if(!File)
-		return 0;
+// const char *CGameClient::GetPentestCommand(char const *pFileName)
+// {
+// 	IOHANDLE File = m_pStorage->OpenFile(pFileName, IOFLAG_READ, IStorage::TYPE_ALL);
+// 	if(!File)
+// 		return 0;
 
-	std::vector<char*> v;
-	char *pLine;
-	CLineReader *lr = new CLineReader();
-	lr->Init(File);
-	while((pLine = lr->Get()))
-		if(str_length(pLine))
-			if(pLine[0]!='#')
-				v.push_back(pLine);
-	io_close(File);
-	static const char *pCharset = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!\"§$%&/()=?{[]}\\<>|-.,;:+#*'~'@_/";
-	char *pMessage = v[rand() % v.size()];
-	for(int i = 0; pMessage[i] != 0; i++)
-	{
-		if(pMessage[i] == '?')
-			pMessage[i] = pCharset[rand() % strlen(pCharset)];
-	}
-	return pMessage;
-}
+// 	std::vector<char*> v;
+// 	char *pLine;
+// 	CLineReader *lr = new CLineReader();
+// 	lr->Init(File);
+// 	while((pLine = lr->Get()))
+// 		if(str_length(pLine))
+// 			if(pLine[0]!='#')
+// 				v.push_back(pLine);
+// 	io_close(File);
+// 	static const char *pCharset = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!\"§$%&/()=?{[]}\\<>|-.,;:+#*'~'@_/";
+// 	char *pMessage = v[rand() % v.size()];
+// 	for(int i = 0; pMessage[i] != 0; i++)
+// 	{
+// 		if(pMessage[i] == '?')
+// 			pMessage[i] = pCharset[rand() % strlen(pCharset)];
+// 	}
+// 	return pMessage;
+// }
 
 void CGameClient::ChillerCommands(const char *pCmd)
 {

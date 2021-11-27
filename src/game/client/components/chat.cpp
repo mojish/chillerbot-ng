@@ -150,8 +150,8 @@ void CChat::ChillerbotMessage(const char *pMsg, int ClientID)
 		str_find_nocase(pMsg, "!help") ||
 		str_find_nocase(pMsg, "!info"))
 	{
-		str_format(aBuf, sizeof(aBuf), "[chillerbot-ng] chillerbot.png headless (v%s)", CHILLERBOT_VERSION);
-		Say(0, aBuf);
+		// str_format(aBuf, sizeof(aBuf), "[chillerbot-ng] chillerbot.png headless (v%s)", CHILLERBOT_VERSION);
+		// Say(0, aBuf);
 	}
 	else if(str_find_nocase(pMsg, "I was a faithful friend from the start. The best friend? No. But I was a faithful friend. From map to map, I helped jao get across hard barriers. We talked and talked, about the future, what teeworlds could hold. We had wonderful moments together, ..."))
 	{
